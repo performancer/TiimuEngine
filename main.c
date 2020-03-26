@@ -1,5 +1,6 @@
-
+#include <stdio.h>
+#include "engine.h"
 
 int main() {
-	return 0;
+	initialize(900, 450, "TiimuEngine");
 }
