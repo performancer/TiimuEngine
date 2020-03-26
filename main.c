@@ -3,4 +3,5 @@
 
 int main() {
 	initialize(900, 450, "TiimuEngine");
+	run();
 }
