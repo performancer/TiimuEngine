@@ -1,0 +1,1 @@
+unsigned int getShader(const char *vertexFile, const char *fragmentFile);
