@@ -1,0 +1,1 @@
+unsigned char* load(char* filename, int* width, int* height);
