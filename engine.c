@@ -74,6 +74,7 @@ void initialize(int width, int height, char* title) {
 	{
 		int width, height;
 		unsigned char* image = loadImage("doge129.bmp", &width, &height);
+		//unsigned char* image = SOIL_load_image("doge129.bmp", &width, &height, 0, SOIL_LOAD_RGBA);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);
 
@@ -88,55 +89,56 @@ void initialize(int width, int height, char* title) {
 	}
 
 	{
-		// top right
+		// bottom right
 		vertices[0] = 512 + width / 2;
 		vertices[1] = 0 + height / 2;
 
-		// bottom right
+		// top right
 		vertices[2] = 512 + width / 2;
 		vertices[3] = 512 + height / 2;
 
-		// top left
+		// bottom left
 		vertices[4] = 0 + width / 2;
 		vertices[5] = 0 + height / 2;
 
-		// bottom right
+		// top right
 		vertices[6] = 512 + width / 2;
 		vertices[7] = 512 + height / 2;
 
-		// bottom left
+		// top left
 		vertices[8] = 0 + width / 2;
 		vertices[9] = 512 + height / 2;
 
-		// top left
+		// bottom left
 		vertices[10] = 0 + width / 2;
 		vertices[11] = 0 + height / 2;
 	}
 
 	{
-		// top right
-		uvs[0] = 0.0f;
-		uvs[1] = 1.0f;
-
 		// bottom right
+		uvs[0] = 1.0f;
+		uvs[1] = 0.0f;
+
+		// top right
 		uvs[2] = 1.0f;
 		uvs[3] = 1.0f;
 
-		// top left
+		// bottom left
 		uvs[4] = 0.0f;
 		uvs[5] = 0.0f;
 
-		// bottom right
+		// top right
 		uvs[6] = 1.0f;
 		uvs[7] = 1.0f;
 
-		// bottom left
-		uvs[8] = 1.0f;
-		uvs[9] = 0.0f;
-
 		// top left
+		uvs[8] = 0.0f;
+		uvs[9] = 1.0f;
+
+		// bottom left
 		uvs[10] = 0.0f;
 		uvs[11] = 0.0f;
+		
 	}
 
 	glGenVertexArrays(1, &vao);
