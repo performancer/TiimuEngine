@@ -75,7 +75,7 @@ void initialize(int width, int height, char* title) {
 		int width, height;
 		unsigned char* image = loadImage("doge128.bmp", &width, &height);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, image);
 
 		if (image == 0)
 		{
@@ -89,28 +89,28 @@ void initialize(int width, int height, char* title) {
 
 	{
 		// top right
-		vertices[0] = width;
-		vertices[1] = 0;
+		vertices[0] = 512 + width / 2;
+		vertices[1] = 0 + height / 2;
 
 		// bottom right
-		vertices[2] = width;
-		vertices[3] = height;
+		vertices[2] = 512 + width / 2;
+		vertices[3] = 512 + height / 2;
 
 		// top left
-		vertices[4] = 0;
-		vertices[5] = 0;
+		vertices[4] = 0 + width / 2;
+		vertices[5] = 0 + height / 2;
 
 		// bottom right
-		vertices[6] = width;
-		vertices[7] = height;
+		vertices[6] = 512 + width / 2;
+		vertices[7] = 512 + height / 2;
 
 		// bottom left
-		vertices[8] = 0;
-		vertices[9] = height;
+		vertices[8] = 0 + width / 2;
+		vertices[9] = 512 + height / 2;
 
 		// top left
-		vertices[10] = 0;
-		vertices[11] = 0;
+		vertices[10] = 0 + width / 2;
+		vertices[11] = 0 + height / 2;
 	}
 
 	{
