@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "file.h"
 
 #pragma pack(1)
 
@@ -27,7 +26,7 @@ struct BITMAPINFOHEADER {
 
 #pragma pack(4)
 
-unsigned char* load(char* filename, int* width, int* height) {
+unsigned char* loadImage(char* filename, int* width, int* height) {
 	//open filename in read binary mode
 	FILE* filePtr = fopen(filename, "rb");
 
