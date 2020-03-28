@@ -74,8 +74,7 @@ void initialize(int width, int height, char* title) {
 	{
 		int width, height;
 		unsigned char* image = loadImage("doge129.bmp", &width, &height);
-		//unsigned char* image = SOIL_load_image("doge129.bmp", &width, &height, 0, SOIL_LOAD_RGBA);
-
+		
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);
 
 		if (image == 0)
