@@ -1,6 +1,4 @@
-#include <stdio.h>
-
-#include <GL/glew.h>
+#include "shader.h"
 
 unsigned int compileShader(const char* source, unsigned int shaderType)
 {

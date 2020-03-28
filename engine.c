@@ -1,10 +1,4 @@
-#include <stdio.h>
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-#include "shader.h"
-#include "file.h"
+#include "engine.h"
 
 GLFWwindow* window;
 unsigned int shaderId, textureId;
@@ -79,7 +73,7 @@ void initialize(int width, int height, char* title) {
 
 	{
 		int width, height;
-		unsigned char* image = loadImage("test.bmp", &width, &height);
+		unsigned char* image = loadImage("doge128.bmp", &width, &height);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 
