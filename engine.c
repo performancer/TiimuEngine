@@ -73,9 +73,9 @@ void initialize(int width, int height, char* title) {
 
 	{
 		int width, height;
-		unsigned char* image = loadImage("doge128.bmp", &width, &height);
+		unsigned char* image = loadImage("doge129.bmp", &width, &height);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, image);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);
 
 		if (image == 0)
 		{
