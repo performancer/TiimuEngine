@@ -1,18 +1,15 @@
 #include "engine.h"
 
 GLFWwindow* window;
-unsigned int shaderId, textureId;
+unsigned int shader;
 unsigned int vao, vbo, ubo;
-
-static short vertices[12];
-static float uvs[12];
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
-void initialize(int width, int height, char* title) {
+void setupWindow(int width, int height, char* title) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -22,6 +19,16 @@ void initialize(int width, int height, char* title) {
 	window = glfwCreateWindow(width, height, title, 0, 0);
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, keyCallback);
+}
+
+void setupViewport() {
+	int width, height;
+	glfwGetFramebufferSize(window, &width, &height);
+	glViewport(0, 0, width, height);
+}
+
+void initialize(int width, int height, char* title) {
+	setupWindow(width, height, title);
 
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -33,107 +40,55 @@ void initialize(int width, int height, char* title) {
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_SCISSOR_TEST);
 
-	{
-		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
-		glViewport(0, 0, width, height);
-	}
+	setupViewport();
+}
 
-	char* vertexShader = readFile("shader.vert");
-	char* fragmentShader = readFile("shader.frag");
-	
+void loadShader(char* vertex, char* fragment) {
+	char* vertexShader = readFile(vertex);
+	char* fragmentShader = readFile(fragment);
+	shader = getShader(vertexShader, fragmentShader);
+}
 
-	shaderId = getShader(vertexShader, fragmentShader);
-
-	
-	glGenTextures(1, &textureId);
-	glBindTexture(GL_TEXTURE_2D, textureId);
+int loadTexture(char* filename) {
+	int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	{
-		int width, height;
-		unsigned char* image = loadImage("doge129.bmp", &width, &height);
-		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);
+	int width, height;
+	unsigned char* image = loadImage(filename, &width, &height);
 
-		if (image == 0)
-		{
-			printf("Failed to load texture image.\n");
-		}
-		else
-		{
-			free(image);
-		}
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);
+
+	if (image == 0) {
+		printf("Failed to load texture image.\n");
+		exit(1);
 	}
 
-	{
-		// bottom right
-		vertices[0] = 512 + width / 2;
-		vertices[1] = 0 + height / 2;
+	free(image);
+	return texture;
+}
 
-		// top right
-		vertices[2] = 512 + width / 2;
-		vertices[3] = 512 + height / 2;
+void unloadTexture(int texture) {
+	glDeleteTextures(1, &texture);
+}
 
-		// bottom left
-		vertices[4] = 0 + width / 2;
-		vertices[5] = 0 + height / 2;
-
-		// top right
-		vertices[6] = 512 + width / 2;
-		vertices[7] = 512 + height / 2;
-
-		// top left
-		vertices[8] = 0 + width / 2;
-		vertices[9] = 512 + height / 2;
-
-		// bottom left
-		vertices[10] = 0 + width / 2;
-		vertices[11] = 0 + height / 2;
-	}
-
-	{
-		// bottom right
-		uvs[0] = 1.0f;
-		uvs[1] = 0.0f;
-
-		// top right
-		uvs[2] = 1.0f;
-		uvs[3] = 1.0f;
-
-		// bottom left
-		uvs[4] = 0.0f;
-		uvs[5] = 0.0f;
-
-		// top right
-		uvs[6] = 1.0f;
-		uvs[7] = 1.0f;
-
-		// top left
-		uvs[8] = 0.0f;
-		uvs[9] = 1.0f;
-
-		// bottom left
-		uvs[10] = 0.0f;
-		uvs[11] = 0.0f;
-		
-	}
-
+void initializeBuffers(struct OBJECT* object) {
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ubo);
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(object->vertices), object->vertices, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(0, 2, GL_SHORT, GL_FALSE, 2 * sizeof(short), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, ubo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(uvs), uvs, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(object->uvs), object->uvs, GL_STATIC_DRAW);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_TRUE, 2 * sizeof(GLfloat), 0);
 
 	glEnableVertexAttribArray(0);
@@ -141,37 +96,44 @@ void initialize(int width, int height, char* title) {
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-	glUseProgram(shaderId);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureId);
-	glBindVertexArray(vao);
 }
 
-void update(){
-
-}
-
-void render(){
-	glClearColor(0.5f, 0.5f, 1.0f, 1.0f);
+void clear(float r, float g, float b) {
+	glClearColor(r, g, b, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+}
 
+void begin() {
+	glUseProgram(shader);
+}
+
+void drawSprite(unsigned int texture, short x, short y, unsigned short width, unsigned short height) {
+	
+	struct OBJECT object = initializeObject(x, y, width, height);
+	initializeBuffers(&object);
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+}
 
+void end() {
 	glfwSwapBuffers(window);
 }
 
-
 void cleanup() {
-	glDeleteTextures(1, &textureId);
-	glDeleteProgram(shaderId);
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ubo);
+	glDeleteProgram(shader);
 }
 
-void run() {
-	while (!glfwWindowShouldClose(window)){
+void run(int* update(), int* draw()) {
+	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		update();
-		render();
+		draw();
 	}
 
 	cleanup();
