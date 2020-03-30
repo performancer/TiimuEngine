@@ -42,11 +42,6 @@ void initialize(int width, int height, char* title) {
 	char* vertexShader = readFile("shader.vert");
 	char* fragmentShader = readFile("shader.frag");
 	
-	
-
-	printf(vertexShader);
-	printf(fragmentShader);
-
 
 	shaderId = getShader(vertexShader, fragmentShader);
 
