@@ -7,27 +7,6 @@ unsigned int vao, vbo, ubo;
 static short vertices[12];
 static float uvs[12];
 
-const char *vertexShader =
-"#version 330\n"
-"layout (location = 0) in vec2 vert;\n"
-"layout (location = 1) in vec2 _uv;\n"
-"out vec2 uv;\n"
-"void main()\n"
-"{\n"
-"    uv = _uv;\n"
-"    gl_Position = vec4(vert.x / 720.0 - 1.0, vert.y / 405.0 - 1.0, 0.0, 1.0);\n"
-"}\n";
-
-const char *fragmentShader =
-"#version 330\n"
-"out vec4 color;\n"
-"in vec2 uv;\n"
-"uniform sampler2D tex;\n"
-"void main()\n"
-"{\n"
-"    color = texture(tex, uv);\n"
-"}\n";
-
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
@@ -59,6 +38,10 @@ void initialize(int width, int height, char* title) {
 		glfwGetFramebufferSize(window, &width, &height);
 		glViewport(0, 0, width, height);
 	}
+
+	char* vertexShader = readFile("shader.vert");
+	char* fragmentShader = readFile("shader.frag");
+	
 
 	shaderId = getShader(vertexShader, fragmentShader);
 
