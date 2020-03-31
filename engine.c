@@ -77,7 +77,20 @@ void unloadTexture(int texture) {
 	glDeleteTextures(1, &texture);
 }
 
+void cleanupBuffers() {
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ubo);
+}
+
+void cleanup() {
+	cleanupBuffers();
+	glDeleteProgram(shader);
+}
+
 void initializeBuffers(struct OBJECT* object) {
+	cleanupBuffers();
+
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ubo);
@@ -108,7 +121,6 @@ void begin() {
 }
 
 void drawSprite(unsigned int texture, short x, short y, unsigned short width, unsigned short height) {
-	
 	struct OBJECT object = initializeObject(x, y, width, height);
 	initializeBuffers(&object);
 	
@@ -120,13 +132,6 @@ void drawSprite(unsigned int texture, short x, short y, unsigned short width, un
 
 void end() {
 	glfwSwapBuffers(window);
-}
-
-void cleanup() {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1, &ubo);
-	glDeleteProgram(shader);
 }
 
 void run(int* update(), int* draw()) {
