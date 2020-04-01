@@ -88,7 +88,62 @@ void cleanup() {
 	glDeleteProgram(shader);
 }
 
-void initializeBuffers(struct OBJECT* object) {
+void getVertices(short* arr, short x, short y, unsigned short width, unsigned short height) {
+	// bottom right
+	arr[0] = x + width;
+	arr[1] = y;
+
+	// top right
+	arr[2] = x + width;
+	arr[3] = y + height;
+
+	// bottom left
+	arr[4] = x;
+	arr[5] = y;
+
+	// top right
+	arr[6] = x + width;
+	arr[7] = y + height;
+
+	// top left
+	arr[8] = x;
+	arr[9] = y + height;
+
+	// bottom left
+	arr[10] = x;
+	arr[11] = y;
+}
+
+void getUVs(float* arr) {
+
+	//TODO: cropping and sprite sheets and such
+
+	// bottom right
+	arr[0] = 1.0f;
+	arr[1] = 0.0f;
+
+	// top right
+	arr[2] = 1.0f;
+	arr[3] = 1.0f;
+
+	// bottom left
+	arr[4] = 0.0f;
+	arr[5] = 0.0f;
+
+	// top right
+	arr[6] = 1.0f;
+	arr[7] = 1.0f;
+
+	// top left
+	arr[8] = 0.0f;
+	arr[9] = 1.0f;
+
+	// bottom left
+	arr[10] = 0.0f;
+	arr[11] = 0.0f;
+}
+
+void initializeBuffers(short* vertices, float* uvs) {
 	cleanupBuffers();
 
 	glGenVertexArrays(1, &vao);
@@ -97,12 +152,12 @@ void initializeBuffers(struct OBJECT* object) {
 	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(object->vertices), object->vertices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(short) * 12, vertices, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(0, 2, GL_SHORT, GL_FALSE, 2 * sizeof(short), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, ubo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(object->uvs), object->uvs, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_TRUE, 2 * sizeof(GLfloat), 0);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, uvs, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_TRUE, 2 * sizeof(float), 0);
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -120,9 +175,13 @@ void begin() {
 	glUseProgram(shader);
 }
 
-void drawSprite(unsigned int texture, short x, short y, unsigned short width, unsigned short height) {
-	struct OBJECT object = initializeObject(x, y, width, height);
-	initializeBuffers(&object);
+void drawSprite(unsigned int texture, short x, short y, unsigned short width, unsigned short height) {	
+	short vertices[12];
+	float uvs[12];
+	getVertices(vertices, x, y, width, height);
+	getUVs(uvs);
+	
+	initializeBuffers(vertices, uvs);
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);

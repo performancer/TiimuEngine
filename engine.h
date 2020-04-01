@@ -6,7 +6,6 @@
 
 #include "shader.h"
 #include "file.h"
-#include "object.h"
 
 void initialize(int width, int height, char* title);
 void loadShader(char* vertex, char* fragment);
