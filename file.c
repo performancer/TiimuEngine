@@ -74,7 +74,7 @@ unsigned char* loadImage(char* filename, int* width, int* height) {
 
 char* readFile(char* filePath) {
 	int len;
-	FILE* file = fopen(filePath, "rb"); 		// Open the file in binary mode
+	FILE* file = fopen(filePath, "rb"); 	// Open the file in binary mode
 	fseek(file, 0, SEEK_END);          		// Jump to the end of the file
 	len = ftell(file);             			// Get the current byte offset in the file
 	rewind(file);                      		// Jump back to the beginning of the file
