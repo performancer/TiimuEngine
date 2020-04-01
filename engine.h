@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include "shader.h"
 #include "file.h"
+#include "input.h"
 
 void initialize(int width, int height, char* title);
 void loadShader(char* vertex, char* fragment);
