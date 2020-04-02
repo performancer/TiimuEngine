@@ -188,7 +188,7 @@ void end() {
 	glfwSwapBuffers(window);
 }
 
-void run(int* update(), int* draw()) {
+void run(void(*update)(), void(*draw)()) {
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		update();

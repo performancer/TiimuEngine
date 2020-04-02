@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "engine.h"
+#include "src/engine.h"
 
 int texture;
 short x, y;
@@ -49,6 +49,6 @@ void draw() {
 int main() {
 	init();
 	load();
-	run(draw, update);
+	run(update, draw);
 	unload();
 }
