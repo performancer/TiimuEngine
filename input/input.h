@@ -4,5 +4,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include "keys.h"
+
 bool isKeyDown(int key);
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);

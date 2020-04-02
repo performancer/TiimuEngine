@@ -5,10 +5,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "IO/file.h"
-#include "IO/image.h"
+#include "io/file.h"
+#include "io/image.h"
 #include "shader.h"
-#include "input.h"
+#include "input/input.h"
 
 void initialize(int width, int height, char* title);
 void loadShader(char* vertex, char* fragment);

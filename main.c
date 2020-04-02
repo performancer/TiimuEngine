@@ -21,20 +21,20 @@ void update(float delta) {
 
 	int speed = 1000;
 
-	if (isKeyDown(87)) {
+	if (isKeyDown(KEY_W) || isKeyDown(KEY_UP)) {
 		y += delta * speed;
 	}
 
-	if (isKeyDown(83)) {
+	if (isKeyDown(KEY_A) || isKeyDown(KEY_LEFT)) {
+		x -= delta * speed;
+	}
+
+	if (isKeyDown(KEY_S) || isKeyDown(KEY_DOWN)) {
 		y -= delta * speed;
 	}
 
-	if (isKeyDown(68)) {
+	if (isKeyDown(KEY_D) || isKeyDown(KEY_RIGHT)) {
 		x += delta * speed;
-	}
-
-	if (isKeyDown(65)) {
-		x -= delta * speed;
 	}
 }
 
