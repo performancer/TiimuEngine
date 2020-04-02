@@ -2,7 +2,7 @@
 #include "engine.h"
 
 int texture;
-short x, y;
+float x, y;
 
 void init() {
 	initialize(900, 450, "TiimuEngine");
@@ -19,20 +19,22 @@ void unload() {
 
 void update(float delta) {
 
+	int speed = 1000;
+
 	if (isKeyDown(87)) {
-		y++;
+		y += delta * speed;
 	}
 
 	if (isKeyDown(83)) {
-		y--;
+		y -= delta * speed;
 	}
 
 	if (isKeyDown(68)) {
-		x++;
+		x += delta * speed;
 	}
 
 	if (isKeyDown(65)) {
-		x--;
+		x -= delta * speed;
 	}
 }
 
@@ -41,7 +43,7 @@ void draw() {
 
 	begin();
 	drawSprite(texture, 400, 500, 250, 250);
-	drawSprite(texture, x, y, 250, 250);
+	drawSprite(texture, (int)x, (int)y, 250, 250);
 	end();
 }
 
