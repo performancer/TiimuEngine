@@ -1,9 +1,8 @@
 #include <stdio.h>
-#include "src/engine.h"
+#include "engine.h"
 
 int texture;
 short x, y;
-
 
 void init() {
 	initialize(900, 450, "TiimuEngine");
@@ -18,7 +17,8 @@ void unload() {
 	unloadTexture(texture);
 }
 
-void update() {
+void update(float delta) {
+
 	if (isKeyDown(87)) {
 		y++;
 	}
@@ -34,7 +34,6 @@ void update() {
 	if (isKeyDown(65)) {
 		x--;
 	}
-
 }
 
 void draw() {

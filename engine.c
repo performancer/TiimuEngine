@@ -188,10 +188,23 @@ void end() {
 	glfwSwapBuffers(window);
 }
 
-void run(void(*update)(), void(*draw)()) {
+
+float getDeltaTime(float* time) {
+	float tmp = (float)glfwGetTime();
+	float delta = tmp - *time;
+	*time = tmp;
+
+	return delta;
+}
+
+void run(void(*update)(float), void(*draw)()) {
+
+	float time = (float)glfwGetTime();
+
 	while (!glfwWindowShouldClose(window)) {
+		float delta = getDeltaTime(&time);
 		glfwPollEvents();
-		update();
+		update(delta);
 		draw();
 	}
 

@@ -16,7 +16,7 @@ void loadShader(char* vertex, char* fragment);
 int loadTexture(char* filename);
 void unloadTexture(int texture);
 
-void run(void(*update)(), void(*draw)());
+void run(void(*update)(float), void(*draw)());
 
 void clear(float r, float g, float b);
 void begin();
