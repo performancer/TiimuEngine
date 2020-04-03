@@ -6,5 +6,14 @@
 
 #include "keys.h"
 
-bool isKeyDown(int key);
+#ifdef __cplusplus
+extern "C" {
+#endif 
+
+	bool isKeyDown(int key);
+
+#ifdef __cplusplus
+}
+#endif 
+
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);

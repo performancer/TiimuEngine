@@ -10,15 +10,23 @@
 #include "shader.h"
 #include "input/input.h"
 
-void initialize(int width, int height, char* title);
-void loadShader(char* vertex, char* fragment);
+#ifdef __cplusplus
+extern "C" {
+#endif 
 
-int loadTexture(char* filename);
-void unloadTexture(int texture);
+	void initialize(int width, int height, const char* title);
+	void loadShader(const char* vertex, const char* fragment);
 
-void run(void(*update)(float), void(*draw)());
+	int loadTexture(const char* filename);
+	void unloadTexture(int texture);
 
-void clear(float r, float g, float b);
-void begin();
-void drawSprite(unsigned int texture, short x, short y, unsigned short width, unsigned short height);
-void end();
+	void run(void(*update)(float), void(*draw)());
+
+	void clear(float r, float g, float b);
+	void begin();
+	void drawSprite(unsigned int texture, short x, short y, unsigned short width, unsigned short height);
+	void end();
+
+#ifdef __cplusplus
+}
+#endif 

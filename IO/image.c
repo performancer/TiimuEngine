@@ -26,7 +26,7 @@ struct BITMAPINFOHEADER {
 
 #pragma pack(4)
 
-unsigned char* loadImage(char* filename, int* width, int* height) {
+unsigned char* loadImage(const char* filename, int* width, int* height) {
 	//open filename in read binary mode
 	FILE* filePtr = fopen(filename, "rb");
 
