@@ -1,6 +1,6 @@
 #include "file.h"
 
-char* readFile(char* filePath) {
+char* readFile(const char* filePath) {
 	int len;
 	FILE* file = fopen(filePath, "rb"); 	// Open the file in binary mode
 	fseek(file, 0, SEEK_END);          		// Jump to the end of the file

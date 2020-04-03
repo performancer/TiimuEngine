@@ -4,7 +4,7 @@ GLFWwindow* window;
 unsigned int shader;
 unsigned int vao, vbo, ubo;
 
-void setupWindow(int width, int height, char* title) {
+void setupWindow(int width, int height, const char* title) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -22,7 +22,7 @@ void setupViewport() {
 	glViewport(0, 0, width, height);
 }
 
-void initialize(int width, int height, char* title) {
+void initialize(int width, int height, const char* title) {
 	setupWindow(width, height, title);
 
 	glewExperimental = GL_TRUE;
@@ -38,7 +38,7 @@ void initialize(int width, int height, char* title) {
 	setupViewport();
 }
 
-void loadShader(char* vertex, char* fragment) {
+void loadShader(const char* vertex, const char* fragment) {
 	char* vertexShader = readFile(vertex);
 	char* fragmentShader = readFile(fragment);
 	shader = getShader(vertexShader, fragmentShader);

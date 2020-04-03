@@ -1,4 +1,4 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char* readFile(char* filePath);
+char* readFile(const char* filePath);
