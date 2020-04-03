@@ -44,8 +44,8 @@ void loadShader(const char* vertex, const char* fragment) {
 	shader = getShader(vertexShader, fragmentShader);
 }
 
-int loadTexture(char* filename) {
-	int texture;
+struct TEXTURE loadTexture(char* path) {
+	unsigned int texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -54,22 +54,24 @@ int loadTexture(char* filename) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	int width, height;
-	unsigned char* image = loadImage(filename, &width, &height);
+	unsigned int width, height;
+	unsigned char* image = loadImage(path, &width, &height);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);
 
 	if (image == 0) {
-		printf("Failed to load texture image.\n");
+		printf("ERROR::TEXTURE::LOADING_FAILED\n%s\n", path);
 		exit(1);
 	}
 
 	free(image);
-	return texture;
+
+	struct TEXTURE t = { texture, width, height };
+	return t;
 }
 
-void unloadTexture(int texture) {
-	glDeleteTextures(1, &texture);
+void unloadTexture(struct TEXTURE texture) {
+	glDeleteTextures(1, &texture.texture);
 }
 
 void cleanupBuffers() {
@@ -83,7 +85,33 @@ void cleanup() {
 	glDeleteProgram(shader);
 }
 
-void getVertices(short* arr, short x, short y, unsigned short width, unsigned short height) {
+void getVertices(short* arr, struct RECTANGLE bounds) {
+	// bottom right
+	arr[0] = bounds.x + bounds.width;
+	arr[1] = bounds.y;
+
+	// top right
+	arr[2] = bounds.x + bounds.width;
+	arr[3] = bounds.y + bounds.height;
+
+	// bottom left
+	arr[4] = bounds.x;
+	arr[5] = bounds.y;
+
+	// top right
+	arr[6] = bounds.x + bounds.width;
+	arr[7] = bounds.y + bounds.height;
+
+	// top left
+	arr[8] = bounds.x;
+	arr[9] = bounds.y + bounds.height;
+
+	// bottom left
+	arr[10] = bounds.x;
+	arr[11] = bounds.y;
+}
+
+void getUVs(float* arr, float x, float y, float width, float height) {
 	// bottom right
 	arr[0] = x + width;
 	arr[1] = y;
@@ -107,35 +135,6 @@ void getVertices(short* arr, short x, short y, unsigned short width, unsigned sh
 	// bottom left
 	arr[10] = x;
 	arr[11] = y;
-}
-
-void getUVs(float* arr) {
-
-	//TODO: cropping and sprite sheets and such
-
-	// bottom right
-	arr[0] = 1.0f;
-	arr[1] = 0.0f;
-
-	// top right
-	arr[2] = 1.0f;
-	arr[3] = 1.0f;
-
-	// bottom left
-	arr[4] = 0.0f;
-	arr[5] = 0.0f;
-
-	// top right
-	arr[6] = 1.0f;
-	arr[7] = 1.0f;
-
-	// top left
-	arr[8] = 0.0f;
-	arr[9] = 1.0f;
-
-	// bottom left
-	arr[10] = 0.0f;
-	arr[11] = 0.0f;
 }
 
 void initializeBuffers(short* vertices, float* uvs) {
@@ -170,16 +169,16 @@ void begin() {
 	glUseProgram(shader);
 }
 
-void drawSprite(unsigned int texture, short x, short y, unsigned short width, unsigned short height) {	
+void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source) {	
 	short vertices[12];
 	float uvs[12];
-	getVertices(vertices, x, y, width, height);
-	getUVs(uvs);
+	getVertices(vertices, destination);
+	getUVs(uvs, (float)source.x / (float)texture.width, (float)source.y / (float)texture.height, (float)source.width / (float)texture.width, (float)source.height / (float)texture.width );
 	
 	initializeBuffers(vertices, uvs);
 	
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindTexture(GL_TEXTURE_2D, texture.texture);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

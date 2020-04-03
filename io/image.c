@@ -26,7 +26,7 @@ struct BITMAPINFOHEADER {
 
 #pragma pack(4)
 
-unsigned char* loadImage(const char* filename, int* width, int* height) {
+unsigned char* loadImage(const char* filename, unsigned int* width, unsigned int* height) {
 	//open filename in read binary mode
 	FILE* filePtr = fopen(filename, "rb");
 
@@ -45,8 +45,8 @@ unsigned char* loadImage(const char* filename, int* width, int* height) {
 	struct BITMAPINFOHEADER bitmapInfoHeader;
 	fread(&bitmapInfoHeader, sizeof(struct BITMAPINFOHEADER), 1, filePtr);
 
-	*width = bitmapInfoHeader.width;
-	*height = bitmapInfoHeader.height;
+	*width = (unsigned int) bitmapInfoHeader.width;
+	*height = (unsigned int) bitmapInfoHeader.height;
 
 	//move file point to the begging of bitmap data
 	fseek(filePtr, bitmapFileHeader.offset, SEEK_SET);
