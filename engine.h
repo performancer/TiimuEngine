@@ -11,6 +11,7 @@
 #include "rectangle.h"
 #include "shader.h"
 #include "texture.h"
+#include "renderTarget.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,9 +26,9 @@ extern "C" {
 	void run(void(*update)(float), void(*draw)(float));
 
 	void clear(float r, float g, float b);
-	void begin();
 	void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source);
-	void end();
+	void setRenderTarget(unsigned int framebuffer, unsigned int width, unsigned int height);
+	void render();
 
 #ifdef __cplusplus
 }

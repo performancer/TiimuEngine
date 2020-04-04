@@ -42,6 +42,8 @@ void loadShader(const char* vertex, const char* fragment) {
 	char* vertexShader = readFile(vertex);
 	char* fragmentShader = readFile(fragment);
 	shader = getShader(vertexShader, fragmentShader);
+
+	glUseProgram(shader);
 }
 
 struct TEXTURE loadTexture(char* path) {
@@ -165,10 +167,6 @@ void clear(float r, float g, float b) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void begin() {
-	glUseProgram(shader);
-}
-
 void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source) {	
 	short vertices[12];
 	float uvs[12];
@@ -183,10 +181,9 @@ void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct REC
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void end() {
+void render() {
 	glfwSwapBuffers(window);
 }
-
 
 float getDeltaTime(float* time) {
 	float tmp = (float)glfwGetTime();
@@ -209,4 +206,9 @@ void run(void(*update)(float), void(*draw)(float)) {
 
 	cleanup();
 	glfwTerminate();
+}
+
+void setRenderTarget(unsigned int framebuffer, unsigned int width, unsigned int height) {
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glViewport(0, 0, width, height);
 }
