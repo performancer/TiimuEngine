@@ -173,7 +173,7 @@ void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct REC
 	short vertices[12];
 	float uvs[12];
 	getVertices(vertices, destination);
-	getUVs(uvs, (float)source.x / (float)texture.width, (float)source.y / (float)texture.height, (float)source.width / (float)texture.width, (float)source.height / (float)texture.width );
+	getUVs(uvs, (float)source.x / (float)texture.width, (float)source.y / (float)texture.height, (float)source.width / (float)texture.width, (float)source.height / (float)texture.height );
 	
 	initializeBuffers(vertices, uvs);
 	
@@ -196,7 +196,7 @@ float getDeltaTime(float* time) {
 	return delta;
 }
 
-void run(void(*update)(float), void(*draw)()) {
+void run(void(*update)(float), void(*draw)(float)) {
 
 	float time = (float)glfwGetTime();
 
@@ -204,7 +204,7 @@ void run(void(*update)(float), void(*draw)()) {
 		float delta = getDeltaTime(&time);
 		glfwPollEvents();
 		update(delta);
-		draw();
+		draw(delta);
 	}
 
 	cleanup();

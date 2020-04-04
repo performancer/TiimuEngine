@@ -22,7 +22,7 @@ extern "C" {
 	struct TEXTURE loadTexture(const char* filename);
 	void unloadTexture(struct TEXTURE texture);
 
-	void run(void(*update)(float), void(*draw)());
+	void run(void(*update)(float), void(*draw)(float));
 
 	void clear(float r, float g, float b);
 	void begin();
