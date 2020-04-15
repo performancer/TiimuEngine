@@ -46,7 +46,7 @@ void loadShader(const char* vertex, const char* fragment) {
 	glUseProgram(shader);
 }
 
-struct TEXTURE loadTexture(char* path) {
+struct TEXTURE loadTexture(const char* filename) {
 	unsigned int texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -57,12 +57,12 @@ struct TEXTURE loadTexture(char* path) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	unsigned int width, height;
-	unsigned char* image = loadImage(path, &width, &height);
+	unsigned char* image = loadImage(filename, &width, &height);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);
 
 	if (image == 0) {
-		printf("ERROR::TEXTURE::LOADING_FAILED\n%s\n", path);
+		printf("ERROR::TEXTURE::LOADING_FAILED\n%s\n", filename);
 		exit(1);
 	}
 
@@ -211,4 +211,10 @@ void run(void(*update)(float), void(*draw)(float)) {
 void setRenderTarget(unsigned int framebuffer, unsigned int width, unsigned int height) {
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glViewport(0, 0, width, height);
+	glUseProgram(shader);
+}
+
+void passShaderValue(const char* key, int value) {
+	int location = glGetUniformLocation(shader, key);
+	glUniform1f(location, value);
 }

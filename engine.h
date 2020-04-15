@@ -30,6 +30,8 @@ extern "C" {
 	void setRenderTarget(unsigned int framebuffer, unsigned int width, unsigned int height);
 	void render();
 
+	void passShaderValue(const char* key, int value);
+
 #ifdef __cplusplus
 }
 #endif 
