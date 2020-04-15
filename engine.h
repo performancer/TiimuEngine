@@ -26,7 +26,7 @@ extern "C" {
 	void run(void(*update)(float), void(*draw)(float));
 
 	void clear(float r, float g, float b);
-	void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source);
+	void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source, bool flipped);
 	void setRenderTarget(unsigned int framebuffer, unsigned int width, unsigned int height);
 	void render();
 

@@ -167,11 +167,15 @@ void clear(float r, float g, float b) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source) {	
+void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source, bool flipped) {	
 	short vertices[12];
 	float uvs[12];
 	getVertices(vertices, destination);
-	getUVs(uvs, (float)source.x / (float)texture.width, (float)source.y / (float)texture.height, (float)source.width / (float)texture.width, (float)source.height / (float)texture.height );
+
+	if(flipped)
+		getUVs(uvs, (source.x + source.width) / (float)texture.width, source.y / (float)texture.height, -source.width / (float)texture.width, source.height / (float)texture.height );
+	else
+		getUVs(uvs, source.x / (float)texture.width, source.y / (float)texture.height, source.width / (float)texture.width, source.height / (float)texture.height );
 	
 	initializeBuffers(vertices, uvs);
 	
