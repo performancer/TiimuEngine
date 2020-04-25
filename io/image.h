@@ -1,4 +1,4 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-unsigned char* loadImage(const char* filename, int* width, int* height);
+unsigned char* loadImage(const char* filename, unsigned int* width, unsigned int* height);
