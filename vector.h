@@ -1,15 +1,16 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
-#include <math.h>
+
+struct VECTOR {
+	float x, y;
+};
 
 #ifdef __cplusplus
 extern "C" {
 #endif 
 
-	struct VECTOR {
-		float x, y;
-	};
-
+	float vector_distance(struct VECTOR vector);
+	struct VECTOR vector_divide(struct VECTOR vector, float divisor);
 	struct VECTOR vector_normalize(struct VECTOR vector);
 
 #ifdef __cplusplus
