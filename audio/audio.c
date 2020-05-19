@@ -80,8 +80,10 @@ int audio_initialize() {
 }
 
 int audio_play(const char* path) {
-	ALCenum error;
+	if (path == NULL)
+		return -1;
 
+	ALCenum error;
 	ALuint buffer, source;
 
 	alGenSources((ALuint)1, &source);
