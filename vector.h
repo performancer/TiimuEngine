@@ -10,7 +10,7 @@ extern "C" {
 #endif 
 
 	float vector_distance(struct VECTOR vector);
-	struct VECTOR vector_divide(struct VECTOR vector, float divisor);
+	struct VECTOR vector_scale(struct VECTOR vector, float multiplier);
 	struct VECTOR vector_normalize(struct VECTOR vector);
 
 #ifdef __cplusplus
