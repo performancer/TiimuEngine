@@ -1,8 +1,19 @@
 #include "engine.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include "graphics/shader.h"
+#include "input/input.h"
+#include "io/file.h"
+#include "io/image.h"
 
-GLFWwindow* window;
-unsigned int shader;
 unsigned int vao, vbo, ubo;
+GLFWwindow* window;
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+	input_register(key, action);
+}
 
 void setupWindow(int width, int height, const char* title) {
 	glfwInit();
@@ -13,7 +24,7 @@ void setupWindow(int width, int height, const char* title) {
 
 	window = glfwCreateWindow(width, height, title, 0, 0);
 	glfwMakeContextCurrent(window);
-	glfwSetKeyCallback(window, keyCallback);
+	glfwSetKeyCallback(window, key_callback);
 }
 
 void setupViewport() {
@@ -36,14 +47,6 @@ void initialize(int width, int height, const char* title) {
 	glDisable(GL_SCISSOR_TEST);
 
 	setupViewport();
-}
-
-void loadShader(const char* vertex, const char* fragment) {
-	char* vertexShader = readFile(vertex);
-	char* fragmentShader = readFile(fragment);
-	shader = getShader(vertexShader, fragmentShader);
-
-	glUseProgram(shader);
 }
 
 struct TEXTURE loadTexture(const char* filename) {
@@ -84,7 +87,7 @@ void cleanupBuffers() {
 
 void cleanup() {
 	cleanupBuffers();
-	glDeleteProgram(shader);
+	shader_delete();
 }
 
 void getVertices(short* arr, struct RECTANGLE bounds) {
@@ -167,7 +170,7 @@ void clear(float r, float g, float b) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source, bool flipped) {	
+void drawSprite(struct TEXTURE texture, struct RECTANGLE destination, struct RECTANGLE source, int flipped) {	
 	short vertices[12];
 	float uvs[12];
 	getVertices(vertices, destination);
@@ -215,10 +218,6 @@ void run(void(*update)(float), void(*draw)(float)) {
 void setRenderTarget(unsigned int framebuffer, unsigned int width, unsigned int height) {
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glViewport(0, 0, width, height);
-	glUseProgram(shader);
+	shader_use();
 }
 
-void passShaderValue(const char* key, int value) {
-	int location = glGetUniformLocation(shader, key);
-	glUniform1f(location, value);
-}

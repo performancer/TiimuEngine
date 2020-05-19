@@ -1,27 +1,29 @@
 #include "image.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #pragma pack(1)
 
 struct BITMAPFILEHEADER {
-	unsigned short type; //specifies the file type
-	unsigned int size; //specifies the size in bytes of the bitmap file
-	unsigned short reserved1; //reserved; must be 0
-	unsigned short reserved2; //reserved; must be 0
-	unsigned int offset; //species the offset in bytes from the bitmapfileheader to the bitmap bits
+	unsigned short type;		//specifies the file type
+	unsigned int size;			//specifies the size in bytes of the bitmap file
+	unsigned short reserved1;	//reserved; must be 0
+	unsigned short reserved2;	//reserved; must be 0
+	unsigned int offset;		//species the offset in bytes from the bitmapfileheader to the bitmap bits
 };
 
 struct BITMAPINFOHEADER {
-	unsigned int size; //specifies the number of bytes required by the struct
-	int width; //specifies width in pixels
-	int height; //species height in pixels
-	unsigned short planes; //specifies the number of color planes, must be 1
-	unsigned short bitCount; //specifies the number of bit per pixel
-	unsigned int compression; //spcifies the type of compression
-	unsigned int sizeImage; //size of image in bytes
-	int xPixelsPerMeter; //number of pixels per meter in x axis
-	int yPixelsPerMeter; //number of pixels per meter in y axis
-	unsigned int colorsUsed; //number of colors used by th ebitmap
-	unsigned int colorsImportant; //number of colors that are important
+	unsigned int size;				//specifies the number of bytes required by the struct
+	int width;						//specifies width in pixels
+	int height;						//species height in pixels
+	unsigned short planes;			//specifies the number of color planes, must be 1
+	unsigned short bitCount;		//specifies the number of bit per pixel
+	unsigned int compression;		//spcifies the type of compression
+	unsigned int sizeImage;			//size of image in bytes
+	int xPixelsPerMeter;			//number of pixels per meter in x axis
+	int yPixelsPerMeter;			//number of pixels per meter in y axis
+	unsigned int colorsUsed;		//number of colors used by th ebitmap
+	unsigned int colorsImportant;	//number of colors that are important
 };
 
 #pragma pack(4)

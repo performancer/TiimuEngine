@@ -1,4 +1,5 @@
 #include "renderTarget.h"
+#include <GL/glew.h>
 
 struct RENDER_TARGET createRenderTarget(unsigned short width, unsigned short height) {
 	struct RENDER_TARGET target = { 0, width, height, 0 };
