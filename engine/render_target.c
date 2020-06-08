@@ -1,8 +1,9 @@
-#include "renderTarget.h"
+#include "render_target.h"
 #include <GL/glew.h>
 
-struct RENDER_TARGET createRenderTarget(unsigned short width, unsigned short height) {
-	struct RENDER_TARGET target = { 0, width, height, 0 };
+struct render_target render_target_create(unsigned short width, unsigned short height)
+{
+	struct render_target target = { 0, width, height, 0 };
 
 	glGenFramebuffers(1, &target.framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, target.framebuffer);
@@ -17,10 +18,11 @@ struct RENDER_TARGET createRenderTarget(unsigned short width, unsigned short hei
 
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, target.texture, 0);
 
-	unsigned int drawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
-	glDrawBuffers(1, drawBuffers);
+	unsigned int draw_buffers[1] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, draw_buffers);
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
 		printf("ERROR::RENDER_TARGET::CREATING_FRAMEBUFFER_FAILED!");
 		exit(1);
 	}
