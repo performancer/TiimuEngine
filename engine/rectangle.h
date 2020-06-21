@@ -1,7 +1,8 @@
 #ifndef _RECTANGLE_H_
 #define _RECTANGLE_H_
 
-struct RECTANGLE {
+struct rectangle
+{
 	int x, y, width, height;
 };
 

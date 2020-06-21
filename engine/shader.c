@@ -1,9 +1,10 @@
 #include "shader.h"
 #include <GL/glew.h>
+#include "io/file.h"
 
 unsigned int _shader;
 
-unsigned int compile(const char* source, unsigned int shaderType)
+unsigned int _compile(const char* source, unsigned int shaderType)
 {
 	unsigned int shader;
 
@@ -23,10 +24,11 @@ unsigned int compile(const char* source, unsigned int shaderType)
 	return shader;
 }
 
-unsigned int link(const char* vertexFile, const char* fragmentFile){
+unsigned int _link(const char* vertexFile, const char* fragmentFile)
+{
 	unsigned int vertex, fragment;
-	vertex = compile(vertexFile, GL_VERTEX_SHADER);
-	fragment = compile(fragmentFile, GL_FRAGMENT_SHADER);
+	vertex = _compile(vertexFile, GL_VERTEX_SHADER);
+	fragment = _compile(fragmentFile, GL_FRAGMENT_SHADER);
 
 	unsigned int id = glCreateProgram();
 	glAttachShader(id, vertex);
@@ -47,19 +49,30 @@ unsigned int link(const char* vertexFile, const char* fragmentFile){
 	return id;
 }
 
-void shader_use() {
+void shader_use()
+{
 	glUseProgram(_shader);
 }
 
-void shader_delete() {
+void shader_delete()
+{
 	glDeleteProgram(_shader);
 }
 
-void shader_set(const char* vertex, const char* fragment) {
-	_shader = link(vertex, fragment);
+void shader_set(const char* vertex, const char* fragment)
+{
+	_shader = _link(vertex, fragment);
 	shader_use();
 }
 
-void shader_uniform(const char* key, int value) {
+void shader_uniform(const char* key, int value)
+{
 	glUniform1f(glGetUniformLocation(_shader, key), value);
+}
+
+void shader_load(const char* vertex, const char* fragment)
+{
+	char* vertex_data = read_file(vertex);
+	char* fragment_data = read_file(fragment);
+	shader_set(vertex_data, fragment_data);
 }
