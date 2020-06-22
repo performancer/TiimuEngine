@@ -54,9 +54,23 @@ void engine_run(void(*update)(float), void(*draw)(float))
 		glfwPollEvents();
 		update(delta);
 		draw(delta);
+		input_flush();
 	}
 
 	_cleanup();
 	glfwTerminate();
+}
+
+void engine_resize_viewport(int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
+
+struct vector engine_monitor_resolution()
+{
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+	struct vector vector = { mode->width, mode->height };
+	return vector;
 }
 

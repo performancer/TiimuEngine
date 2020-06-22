@@ -7,8 +7,12 @@ extern "C"
 #endif 
 
 	void input_register(int key, int action);
-	unsigned int is_key_down(int key);
-	unsigned int is_key_up(int key);
+	void input_flush();
+
+	unsigned int key_down(int key);
+	unsigned int key_up(int key);
+	unsigned int key_pressed(int key);
+	unsigned int key_released(int key);
 
 #ifdef __cplusplus
 }
