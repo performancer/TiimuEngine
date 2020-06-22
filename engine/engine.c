@@ -51,6 +51,7 @@ void engine_run(void(*update)(float), void(*draw)(float))
 	while (!glfwWindowShouldClose(get_window()))
 	{
 		float delta = _deltatime(&time);
+		frame_counter_update(delta);
 		glfwPollEvents();
 		update(delta);
 		draw(delta);
