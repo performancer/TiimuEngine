@@ -11,6 +11,8 @@
 #include "input.h"
 #include "keys.h"
 
+#include "frame_counter.h"
+
 #include "audio/audio.h"
 
 #ifdef __cplusplus
