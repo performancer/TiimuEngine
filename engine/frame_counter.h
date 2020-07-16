@@ -6,8 +6,8 @@ extern "C"
 {
 #endif
 
-	float frame_counter_fps();
-	float frame_counter_update(float delta);
+	double frame_counter_fps();
+	void frame_counter_update(double delta);
 
 #ifdef __cplusplus
 }
