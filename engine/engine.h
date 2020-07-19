@@ -21,7 +21,7 @@ extern "C"
 #endif
 
 	void engine_initialize(int width, int height, const char* title);
-	void engine_run(void(*update)(float), void(*draw)(float));
+	void engine_run(void(*update)(double), void(*draw)(double));
 	void engine_resize_viewport(int width, int height);
 	struct vector engine_monitor_resolution();
 

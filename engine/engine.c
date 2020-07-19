@@ -18,11 +18,12 @@ void _cleanup()
 	shader_delete();
 }
 
-float _deltatime(float* time)
+double _deltatime()
 {
-	float tmp = (float)glfwGetTime();
-	float delta = tmp - *time;
-	*time = tmp;
+	static double time;
+	double tmp = glfwGetTime();
+	double delta = tmp - time;
+	time = tmp;
 
 	return delta;
 }
@@ -44,13 +45,13 @@ void engine_initialize(int width, int height, const char* title)
 	_setup_viewport(window);
 }
 
-void engine_run(void(*update)(float), void(*draw)(float))
+void engine_run(void(*update)(double), void(*draw)(double))
 {
-	float time = (float)glfwGetTime();
+	double delta = _deltatime();
 
 	while (!glfwWindowShouldClose(get_window()))
 	{
-		float delta = _deltatime(&time);
+		delta = _deltatime();
 		frame_counter_update(delta);
 		glfwPollEvents();
 		update(delta);
