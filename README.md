@@ -6,12 +6,12 @@ struct texture texture;
 int screen_width = 800;
 int screen_height = 450;
 
-void update(float delta)
+void update(double delta)
 {
 	//TODO: game logic
 }
 
-void draw(float delta)
+void draw(double delta)
 {
 	graphics_set_render_target(0, screen_width, screen_height);
 	shader_uniform("width", screen_width);
