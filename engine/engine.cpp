@@ -72,7 +72,7 @@ struct vector engine_monitor_resolution()
 {
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-	struct vector vector = { mode->width, mode->height };
+	struct vector vector = { (float)mode->width, (float)mode->height };
 	return vector;
 }
 
