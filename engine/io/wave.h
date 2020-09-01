@@ -1,5 +1,4 @@
-#ifndef _WAVE_H_
-#define _WAVE_H_
+#pragma once
 
 #pragma pack(1)
 struct WAVFILEHEADER {
@@ -19,14 +18,4 @@ struct WAVFILEHEADER {
 };
 #pragma pack(4)
 
-#ifdef __cplusplus
-extern "C" {
-#endif 
-
 char* wav_load(const char* path, struct WAVFILEHEADER* header);
-
-#ifdef __cplusplus
-}
-#endif 
-
-#endif

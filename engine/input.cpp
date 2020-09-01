@@ -1,4 +1,6 @@
 #include "input.h"
+#include <stdio.h>
+#include <string.h>
 #define buffer_size 350
 
 int _buffer[buffer_size];

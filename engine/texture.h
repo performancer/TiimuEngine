@@ -1,5 +1,4 @@
-#ifndef _TEXTURE_H_
-#define _TEXTURE_H_
+#pragma once
 
 struct texture
 {
@@ -7,16 +6,5 @@ struct texture
 	unsigned short width, height;
 };
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif 
-
-	struct texture texture_load(const char* path);
-	void texture_unload(struct texture texture);
-
-#ifdef __cplusplus
-}
-#endif 
-
-#endif
+struct texture texture_load(const char* path);
+void texture_unload(struct texture texture);
