@@ -1,3 +1,5 @@
+#pragma once
+
 /* Printable keys */
 #define KEY_SPACE              32
 #define KEY_APOSTROPHE         39  /* ' */

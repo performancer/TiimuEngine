@@ -1,3 +1,4 @@
+#include "frame_counter.h"
 #define sample_count 5
 
 double _samples[sample_count];

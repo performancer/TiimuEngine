@@ -1,20 +1,9 @@
-#ifndef _INPUT_H_
-#define _INPUT_H_
+#pragma once
 
-#ifdef __cplusplus
-extern "C" 
-{
-#endif 
+void input_register(int key, int action);
+void input_flush();
 
-	void input_register(int key, int action);
-	void input_flush();
-
-	unsigned int key_down(int key);
-	unsigned int key_up(int key);
-	unsigned int key_pressed(int key);
-	unsigned int key_released(int key);
-
-#ifdef __cplusplus
-}
-#endif 
-#endif
+int key_down(int key);
+int key_up(int key);
+int key_pressed(int key);
+int key_released(int key);

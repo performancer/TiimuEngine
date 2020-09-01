@@ -1,9 +1,6 @@
-#ifndef _RECTANGLE_H_
-#define _RECTANGLE_H_
+#pragma once
 
 struct rectangle
 {
 	int x, y, width, height;
 };
-
-#endif
