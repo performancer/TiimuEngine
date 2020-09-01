@@ -16,10 +16,6 @@ glew32.dll
 *.user
 *.userosscache
 *.sln.docstates
-*.code-workspace
-.vscode/*
-content/*
-
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
