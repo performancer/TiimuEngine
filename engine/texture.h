@@ -4,7 +4,7 @@
 struct texture
 {
 	unsigned int texture;
-	unsigned short width, height;
+	unsigned int width, height;
 };
 
 #ifdef __cplusplus

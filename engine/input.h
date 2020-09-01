@@ -9,10 +9,10 @@ extern "C"
 	void input_register(int key, int action);
 	void input_flush();
 
-	unsigned int key_down(int key);
-	unsigned int key_up(int key);
-	unsigned int key_pressed(int key);
-	unsigned int key_released(int key);
+	int key_down(int key);
+	int key_up(int key);
+	int key_pressed(int key);
+	int key_released(int key);
 
 #ifdef __cplusplus
 }

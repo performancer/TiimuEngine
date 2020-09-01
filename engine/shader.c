@@ -1,6 +1,7 @@
 #include "shader.h"
 #include <GL/glew.h>
 #include "io/file.h"
+#include <stdio.h>
 
 unsigned int _shader;
 

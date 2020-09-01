@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "window.h"
+#include "frame_counter.h"
 
 void _setup_viewport(GLFWwindow* window)
 {
@@ -72,7 +73,7 @@ struct vector engine_monitor_resolution()
 {
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-	struct vector vector = { mode->width, mode->height };
+	struct vector vector = { (float)mode->width, (float)mode->height };
 	return vector;
 }
 

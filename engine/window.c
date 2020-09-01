@@ -1,4 +1,5 @@
 #include "window.h"
+#include "input.h"
 #include <GLFW/glfw3.h>
 
 struct GLFWwindow* _window;

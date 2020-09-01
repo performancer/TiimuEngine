@@ -1,5 +1,7 @@
 #include "render_target.h"
 #include <GL/glew.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 struct render_target render_target_create(unsigned short width, unsigned short height)
 {

@@ -1,8 +1,9 @@
 #include "input.h"
-#define buffer_size 350
+#include <string.h>
+#define BUFFER_SIZE 350
 
-int _buffer[buffer_size];
-int _history[buffer_size];
+int _buffer[BUFFER_SIZE];
+int _history[BUFFER_SIZE];
 
 void input_register(int key, int action)
 {

@@ -2,6 +2,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "io/image.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 struct texture texture_load(const char* path)
 {
