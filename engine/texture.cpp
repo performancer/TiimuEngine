@@ -29,7 +29,7 @@ struct texture texture_load(const char* path)
 
 	free(image);
 
-	struct texture t = { texture_handle, width, height };
+	struct texture t = { texture_handle, (short unsigned)width, (short unsigned)height };
 	return t;
 }
 

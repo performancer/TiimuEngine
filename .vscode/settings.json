@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "engine.h": "c",
+        "stdio.h": "c",
+        "input.h": "c"
+    }
+}
