@@ -7,3 +7,5 @@ int key_down(int key);
 int key_up(int key);
 int key_pressed(int key);
 int key_released(int key);
+
+struct vector get_mouse_position();
