@@ -15,7 +15,6 @@ void _setup_viewport(GLFWwindow* window)
 void _cleanup()
 {
 	graphics_cleanup();
-	shader_delete();
 }
 
 double _deltatime()
