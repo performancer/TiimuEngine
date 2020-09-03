@@ -127,7 +127,6 @@ void graphics_set_render_target(unsigned int framebuffer, unsigned int width, un
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glViewport(0, 0, width, height);
-	shader_use();
 }
 
 void graphics_cleanup()

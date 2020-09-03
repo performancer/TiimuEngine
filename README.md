@@ -1,7 +1,8 @@
 <b>HOW TO USE</b>
-```
+```c++
 #include "engine/engine.h"
 
+class shader shader;
 struct texture texture;
 int screen_width = 800;
 int screen_height = 450;
@@ -26,12 +27,14 @@ void draw(double delta)
 int main()
 {
 	engine_initialize(screen_width, screen_height, "game");
-	shader_load("shader.vert", "shader.frag");
+	shader.load("shader.vert", "shader.frag");
+	shader.use();
+
 	texture = texture_load("texture.bmp");
 
 	engine_run(update, draw);
 
 	texture_unload(texture);
-	shader_delete();
+	shader.unload();
 }
 ```
