@@ -12,11 +12,6 @@ void _setup_viewport(GLFWwindow* window)
 	glViewport(0, 0, width, height);
 }
 
-void _cleanup()
-{
-	graphics_cleanup();
-}
-
 double _deltatime()
 {
 	static double time;
@@ -27,7 +22,27 @@ double _deltatime()
 	return delta;
 }
 
-void engine_initialize(int width, int height, const char* title)
+void engine::run(int width, int height, const char* title)
+{
+	_do_initialize(width, height, title);
+
+	double delta = _deltatime();
+
+	while (!glfwWindowShouldClose(get_window()))
+	{
+		delta = _deltatime();
+		frame_counter_update(delta);
+		glfwPollEvents();
+		_do_update(delta);
+		_do_draw(delta);
+		input_flush();
+	}
+
+	_cleanup();
+	glfwTerminate();
+}
+
+void engine::_do_initialize(int width, int height, const char* title)
 {
 	GLFWwindow* window = window_setup(width, height, title);
 
@@ -42,36 +57,22 @@ void engine_initialize(int width, int height, const char* title)
 	glDisable(GL_SCISSOR_TEST);
 
 	_setup_viewport(window);
+
+	initialize();
+	load_content();
 }
 
-void engine_run(void(*update)(double), void(*draw)(double))
+void engine::_do_update(double delta)
 {
-	double delta = _deltatime();
-
-	while (!glfwWindowShouldClose(get_window()))
-	{
-		delta = _deltatime();
-		frame_counter_update(delta);
-		glfwPollEvents();
-		update(delta);
-		draw(delta);
-		input_flush();
-	}
-
-	_cleanup();
-	glfwTerminate();
+	update(delta);
 }
 
-void engine_resize_viewport(int width, int height)
+void engine::_do_draw(double delta)
 {
-	glViewport(0, 0, width, height);
+	draw(delta);
 }
 
-struct vector engine_monitor_resolution()
+void engine::_cleanup()
 {
-	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-	struct vector vector = { (float)mode->width, (float)mode->height };
-	return vector;
+	graphics_cleanup();
 }
-
