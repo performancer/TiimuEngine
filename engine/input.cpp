@@ -43,6 +43,6 @@ struct vector get_mouse_position()
 {
 	double xpos, ypos;
 	glfwGetCursorPos(get_window(), &xpos, &ypos);
-	struct vector ret = {.x = (float)xpos, .y = (float)ypos};
-	return ret;
+
+	return {.x = (float)xpos, .y = (float)ypos};
 }
