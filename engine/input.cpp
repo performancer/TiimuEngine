@@ -44,5 +44,10 @@ struct vector get_mouse_position()
 	double xpos, ypos;
 	glfwGetCursorPos(get_window(), &xpos, &ypos);
 
-	return {.x = (float)xpos, .y = (float)ypos};
+	return {(float)xpos, (float)ypos};
+}
+
+void set_mouse_button_callback(void *callback)
+{
+	glfwSetMouseButtonCallback(get_window(), (GLFWmousebuttonfun)callback);
 }
