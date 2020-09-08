@@ -38,7 +38,6 @@ void engine::run(int width, int height, const char* title)
 		input_flush();
 	}
 
-	_cleanup();
 	glfwTerminate();
 }
 
@@ -70,9 +69,4 @@ void engine::_do_update(double delta)
 void engine::_do_draw(double delta)
 {
 	draw(delta);
-}
-
-void engine::_cleanup()
-{
-	graphics_cleanup();
 }

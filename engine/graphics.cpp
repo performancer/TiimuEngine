@@ -6,16 +6,14 @@
 #include "window.h"
 #include "shader.h"
 
-unsigned int _vao, _vbo, _ubo;
-
-void _buffers_cleanup()
+void graphics::_buffers_cleanup()
 {
 	glDeleteVertexArrays(1, &_vao);
 	glDeleteBuffers(1, &_vbo);
 	glDeleteBuffers(1, &_ubo);
 }
 
-void buffers_initialize(short* vertices, float* uvs)
+void graphics::_buffers_initialize(short* vertices, float* uvs)
 {
 	_buffers_cleanup();
 
@@ -39,13 +37,7 @@ void buffers_initialize(short* vertices, float* uvs)
 	glBindVertexArray(0);
 }
 
-void graphics_clear(float r, float g, float b)
-{
-	glClearColor(r, g, b, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void get_vertices(short* arr, struct rectangle bounds)
+void graphics::_get_vertices(short* arr, struct rectangle bounds)
 {
 	// bottom right
 	arr[0] = bounds.x + bounds.width;
@@ -72,7 +64,7 @@ void get_vertices(short* arr, struct rectangle bounds)
 	arr[11] = bounds.y;
 }
 
-void get_UVs(float* arr, float x, float y, float width, float height)
+void graphics::_get_UVs(float* arr, float x, float y, float width, float height)
 {
 	// bottom right
 	arr[0] = x + width;
@@ -99,18 +91,40 @@ void get_UVs(float* arr, float x, float y, float width, float height)
 	arr[11] = y;
 }
 
-void graphics_draw(struct texture texture, struct rectangle destination, struct rectangle source, int flipped)
+graphics::graphics()
+{
+
+}
+
+graphics::~graphics()
+{
+	_buffers_cleanup();
+}
+
+void graphics::clear(float r, float g, float b)
+{
+	glClearColor(r, g, b, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void graphics::set_render_target(unsigned int framebuffer, unsigned int width, unsigned int height)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glViewport(0, 0, width, height);
+}
+
+void graphics::draw(struct texture texture, struct rectangle destination, struct rectangle source, int flipped)
 {
 	short vertices[12];
 	float uvs[12];
-	get_vertices(vertices, destination);
+	_get_vertices(vertices, destination);
 
 	if (flipped)
-		get_UVs(uvs, (source.x + source.width) / (float)texture.width, source.y / (float)texture.height, -source.width / (float)texture.width, source.height / (float)texture.height);
+		_get_UVs(uvs, (source.x + source.width) / (float)texture.width, source.y / (float)texture.height, -source.width / (float)texture.width, source.height / (float)texture.height);
 	else
-		get_UVs(uvs, source.x / (float)texture.width, source.y / (float)texture.height, source.width / (float)texture.width, source.height / (float)texture.height);
+		_get_UVs(uvs, source.x / (float)texture.width, source.y / (float)texture.height, source.width / (float)texture.width, source.height / (float)texture.height);
 
-	buffers_initialize(vertices, uvs);
+	_buffers_initialize(vertices, uvs);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture.texture);
@@ -118,18 +132,7 @@ void graphics_draw(struct texture texture, struct rectangle destination, struct 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void graphics_render()
+void graphics::render()
 {
 	glfwSwapBuffers(get_window());
-}
-
-void graphics_set_render_target(unsigned int framebuffer, unsigned int width, unsigned int height)
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	glViewport(0, 0, width, height);
-}
-
-void graphics_cleanup()
-{
-	_buffers_cleanup();
 }
