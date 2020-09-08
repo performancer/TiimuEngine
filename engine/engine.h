@@ -16,7 +16,6 @@ private:
 	void _do_initialize(int width, int height, const char* title);
 	void _do_update(double delta);
 	void _do_draw(double delta);
-	void _cleanup();
 public:
 	void run(int width, int height, const char* title);
 	virtual void initialize() = 0;
