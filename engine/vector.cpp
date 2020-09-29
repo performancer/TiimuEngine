@@ -1,19 +1,36 @@
 #include "vector.h"
 #include <math.h>
 
-float vector_distance(struct vector vector)
+Vector Vector::operator-(Vector rhs)
 {
-	return (float)sqrt(pow(vector.x, 2) + pow(vector.y, 2));
+	return { x - rhs.x, y - rhs.y };
 }
 
-struct vector vector_scale(struct vector vector, float multiplier)
+float Vector::Cross(Vector other) const
 {
+	return x * other.y - y * other.x;
+}
+
+float Vector::Dot(Vector other) const
+{
+	return x * other.x + y * other.y;
+}
+
+Vector Vector::Scale(float multiplier) const
+{
+	Vector vector = { x, y };
 	vector.x *= multiplier;
 	vector.y *= multiplier;
+
 	return vector;
 }
 
-struct vector vector_normalize(struct vector vector)
+Vector Vector::Normalize() const
 {
-	return vector_scale(vector, 1.0f / vector_distance(vector));
+	return Scale(1.0f / Distance());
+}
+
+float Vector::Distance() const
+{
+	return (float)sqrt(pow(x, 2) + pow(y, 2));
 }
