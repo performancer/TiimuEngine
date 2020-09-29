@@ -1,10 +1,14 @@
 #pragma once
 
-struct vector
+struct Vector
 {
 	float x, y;
-};
 
-float vector_distance(struct vector vector);
-struct vector vector_scale(struct vector vector, float multiplier);
-struct vector vector_normalize(struct vector vector);
+	Vector operator-(Vector other);
+
+	float Cross(Vector other) const;
+	float Dot(Vector other) const;
+	Vector Scale(float multiplier) const;
+	Vector Normalize() const;
+	float Distance() const;
+};
