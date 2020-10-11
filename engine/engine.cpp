@@ -5,14 +5,16 @@
 #include <GLFW/glfw3.h>
 #include "window.h"
 
-void _setup_viewport(GLFWwindow* window)
+Point _setup_viewport(GLFWwindow* window)
 {
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
+
+	return { width, height };
 }
 
-double _deltatime()
+double engine::_deltatime()
 {
 	static double time;
 	double tmp = glfwGetTime();
@@ -20,25 +22,6 @@ double _deltatime()
 	time = tmp;
 
 	return delta;
-}
-
-void engine::run(int width, int height, const char* title)
-{
-	_do_initialize(width, height, title);
-
-	double delta = _deltatime();
-
-	while (!glfwWindowShouldClose(get_window()))
-	{
-		delta = _deltatime();
-		frame_counter_update(delta);
-		glfwPollEvents();
-		_do_update(delta);
-		_do_draw(delta);
-		input_flush();
-	}
-
-	glfwTerminate();
 }
 
 void engine::_do_initialize(int width, int height, const char* title)
@@ -55,18 +38,47 @@ void engine::_do_initialize(int width, int height, const char* title)
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_SCISSOR_TEST);
 
-	_setup_viewport(window);
+	_viewport = _setup_viewport(window);
 
-	initialize();
-	load_content();
+	Initialize();
+	LoadContent();
 }
 
 void engine::_do_update(double delta)
 {
-	update(delta);
+	Update(delta);
 }
 
 void engine::_do_draw(double delta)
 {
-	draw(delta);
+	Draw(delta);
+}
+
+int engine::GetViewportWidth() const
+{
+	return _viewport.x;
+}
+
+int engine::GetViewportHeight() const
+{
+	return _viewport.y;
+}
+
+void engine::Run(int width, int height, const char* title)
+{
+	_do_initialize(width, height, title);
+
+	double delta = _deltatime();
+
+	while (!glfwWindowShouldClose(get_window()))
+	{
+		delta = _deltatime();
+		frame_counter_update(delta);
+		glfwPollEvents();
+		_do_update(delta);
+		_do_draw(delta);
+		input_flush();
+	}
+
+	glfwTerminate();
 }
