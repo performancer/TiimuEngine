@@ -1,7 +1,7 @@
 #include "graphics.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "rectangle.h"
+#include "physics/rectangle.h"
 #include "texture.h"
 #include "window.h"
 #include "shader.h"

@@ -1,6 +1,7 @@
 #pragma once
-#include "vector.h"
-#include "rectangle.h"
+#include "physics/vector.h"
+#include "physics/rectangle.h"
+#include "physics/point.h"
 #include "texture.h"
 #include "render_target.h"
 #include "shader.h"
@@ -9,7 +10,6 @@
 #include "keys.h"
 #include "frame_counter.h"
 #include "audio/audio.h"
-#include "point.h"
 
 class engine
 {
