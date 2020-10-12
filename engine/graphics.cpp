@@ -13,7 +13,7 @@ void graphics::_buffers_cleanup()
 	glDeleteBuffers(1, &_ubo);
 }
 
-void graphics::_buffers_initialize(short* vertices, float* uvs)
+void graphics::_buffers_initialize(float* vertices, float* uvs)
 {
 	_buffers_cleanup();
 
@@ -23,8 +23,8 @@ void graphics::_buffers_initialize(short* vertices, float* uvs)
 	glBindVertexArray(_vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(short) * 12, vertices, GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(0, 2, GL_SHORT, GL_FALSE, 2 * sizeof(short), 0);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, vertices, GL_DYNAMIC_DRAW);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, _ubo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, uvs, GL_STATIC_DRAW);
@@ -37,34 +37,7 @@ void graphics::_buffers_initialize(short* vertices, float* uvs)
 	glBindVertexArray(0);
 }
 
-void graphics::_get_vertices(short* arr, struct rectangle bounds)
-{
-	// bottom right
-	arr[0] = bounds.x + bounds.width;
-	arr[1] = bounds.y;
-
-	// top right
-	arr[2] = bounds.x + bounds.width;
-	arr[3] = bounds.y + bounds.height;
-
-	// bottom left
-	arr[4] = bounds.x;
-	arr[5] = bounds.y;
-
-	// top right
-	arr[6] = bounds.x + bounds.width;
-	arr[7] = bounds.y + bounds.height;
-
-	// top left
-	arr[8] = bounds.x;
-	arr[9] = bounds.y + bounds.height;
-
-	// bottom left
-	arr[10] = bounds.x;
-	arr[11] = bounds.y;
-}
-
-void graphics::_get_UVs(float* arr, float x, float y, float width, float height)
+void graphics::_vertices(float* arr, float x, float y, float width, float height)
 {
 	// bottom right
 	arr[0] = x + width;
@@ -113,16 +86,30 @@ void graphics::set_render_target(unsigned int framebuffer, unsigned int width, u
 	glViewport(0, 0, width, height);
 }
 
-void graphics::draw(struct texture texture, struct rectangle destination, struct rectangle source, int flipped)
+void graphics::draw(struct texture texture, Vector destination, struct rectangle source, int flipped)
 {
-	short vertices[12];
-	float uvs[12];
-	_get_vertices(vertices, destination);
+	draw(texture, destination, source, 1.0f, flipped);
+}
+
+void graphics::draw(struct texture texture, Vector destination, struct rectangle source, float scale, int flipped)
+{
+	float vertices[12], uvs[12];
+
+	_vertices(vertices, destination.x, destination.y, source.width * scale, source.height * scale);
 
 	if (flipped)
-		_get_UVs(uvs, (source.x + source.width) / (float)texture.width, source.y / (float)texture.height, -source.width / (float)texture.width, source.height / (float)texture.height);
-	else
-		_get_UVs(uvs, source.x / (float)texture.width, source.y / (float)texture.height, source.width / (float)texture.width, source.height / (float)texture.height);
+	{
+		source.x += source.width;
+		source.width *= -1;
+	}
+
+	_vertices(
+		uvs,
+		source.x / (float)texture.width,
+		source.y / (float)texture.height,
+		source.width / (float)texture.width,
+		source.height / (float)texture.height
+	);
 
 	_buffers_initialize(vertices, uvs);
 
