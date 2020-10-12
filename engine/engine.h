@@ -1,7 +1,4 @@
 #pragma once
-#include "physics/vector.h"
-#include "physics/rectangle.h"
-#include "physics/point.h"
 #include "texture.h"
 #include "render_target.h"
 #include "shader.h"
@@ -9,19 +6,22 @@
 #include "input.h"
 #include "keys.h"
 #include "frame_counter.h"
-#include "audio/audio.h"
 
-class engine
+#include "physics/vector.h"
+#include "physics/rectangle.h"
+#include "physics/point.h"
+
+class Engine
 {
 private:
-	Point _viewport;
 	void _do_initialize(int width, int height, const char* title);
-	void _do_update(double delta);
-	void _do_draw(double delta);
+	void _setup_viewport();
 	double _deltatime();
 public:
-	int GetViewportWidth() const;
-	int GetViewportHeight() const;
+	int ViewportWidth() const;
+	int ViewportHeight() const;
+	int WindowWidth() const;
+	int WindowHeight() const;
 
 	void Run(int width, int height, const char* title);
 	virtual void Initialize() = 0;

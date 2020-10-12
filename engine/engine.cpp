@@ -5,26 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "window.h"
 
-Point _setup_viewport(GLFWwindow* window)
-{
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
-
-	return { width, height };
-}
-
-double engine::_deltatime()
-{
-	static double time;
-	double tmp = glfwGetTime();
-	double delta = tmp - time;
-	time = tmp;
-
-	return delta;
-}
-
-void engine::_do_initialize(int width, int height, const char* title)
+void Engine::_do_initialize(int width, int height, const char* title)
 {
 	GLFWwindow* window = window_setup(width, height, title);
 
@@ -38,33 +19,62 @@ void engine::_do_initialize(int width, int height, const char* title)
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_SCISSOR_TEST);
 
-	_viewport = _setup_viewport(window);
+	_setup_viewport();
 
 	Initialize();
 	LoadContent();
 }
 
-void engine::_do_update(double delta)
+void Engine::_setup_viewport()
 {
-	Update(delta);
+	int width, height;
+	glfwGetFramebufferSize(get_window(), &width, &height);
+	glViewport(0, 0, width, height);
 }
 
-void engine::_do_draw(double delta)
+double Engine::_deltatime()
 {
-	Draw(delta);
+	static double time;
+	double tmp = glfwGetTime();
+	double delta = tmp - time;
+	time = tmp;
+
+	return delta;
 }
 
-int engine::GetViewportWidth() const
+int Engine::ViewportWidth() const
 {
-	return _viewport.x;
+	int viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	return viewport[2];
 }
 
-int engine::GetViewportHeight() const
+int Engine::ViewportHeight() const
 {
-	return _viewport.y;
+	int viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	return viewport[3];
 }
 
-void engine::Run(int width, int height, const char* title)
+int Engine::WindowWidth() const
+{
+	int width, height;
+	glfwGetWindowSize(get_window(), &width, &height);
+
+	return width;
+}
+
+int Engine::WindowHeight() const
+{
+	int width, height;
+	glfwGetWindowSize(get_window(), &width, &height);
+
+	return height;
+}
+
+void Engine::Run(int width, int height, const char* title)
 {
 	_do_initialize(width, height, title);
 
@@ -75,8 +85,8 @@ void engine::Run(int width, int height, const char* title)
 		delta = _deltatime();
 		frame_counter_update(delta);
 		glfwPollEvents();
-		_do_update(delta);
-		_do_draw(delta);
+		Update(delta);
+		Draw(delta);
 		input_flush();
 	}
 
