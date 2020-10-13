@@ -5,7 +5,25 @@
 #include <GLFW/glfw3.h>
 #include "io/image.h"
 
-struct texture texture_load(const char* path)
+texture texture_load(const char* path)
+{
+	unsigned int width, height;
+	unsigned char* data = loadImage(path, &width, &height);
+
+	texture text = texture_load(width, height, data);
+
+	if (data == 0)
+	{
+		printf("ERROR::TEXTURE::LOADING_FAILED\n%s\n", path);
+		exit(1);
+	}
+
+	free(data);
+
+	return text;
+}
+
+struct texture texture_load(unsigned int width, unsigned int height, const unsigned char* data)
 {
 	unsigned int texture_handle;
 	glGenTextures(1, &texture_handle);
@@ -16,21 +34,9 @@ struct texture texture_load(const char* path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	unsigned int width, height;
-	unsigned char* image = loadImage(path, &width, &height);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);
-
-	if (image == 0)
-	{
-		printf("ERROR::TEXTURE::LOADING_FAILED\n%s\n", path);
-		exit(1);
-	}
-
-	free(image);
-
-	struct texture t = { texture_handle, (unsigned short)width, (unsigned short)height };
-	return t;
+	return { texture_handle, (unsigned short)width, (unsigned short)height };
 }
 
 void texture_unload(struct texture texture)
