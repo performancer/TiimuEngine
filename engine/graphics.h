@@ -13,6 +13,7 @@ public:
 	~graphics();
 	void clear(float r, float g, float b);
 	void set_render_target(unsigned int framebuffer, unsigned int width, unsigned int height);
+	void draw(struct texture texture, Vector destination);
 	void draw(struct texture texture, Vector destination, struct rectangle source, int flipped = false);
 	void draw(struct texture texture, Vector destination, struct rectangle source, float scale, int flipped = false);
 	void render();

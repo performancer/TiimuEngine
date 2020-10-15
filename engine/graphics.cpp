@@ -86,6 +86,11 @@ void graphics::set_render_target(unsigned int framebuffer, unsigned int width, u
 	glViewport(0, 0, width, height);
 }
 
+void graphics::draw(struct texture texture, Vector destination)
+{
+	draw(texture, destination, { 0, 0, texture.width, texture.height }, false);
+}
+
 void graphics::draw(struct texture texture, Vector destination, struct rectangle source, int flipped)
 {
 	draw(texture, destination, source, 1.0f, flipped);
