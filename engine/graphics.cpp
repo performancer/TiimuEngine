@@ -118,6 +118,7 @@ void graphics::draw(struct texture texture, Vector destination, struct rectangle
 
 	_buffers_initialize(vertices, uvs);
 
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture.texture);
 	glBindVertexArray(_vao);

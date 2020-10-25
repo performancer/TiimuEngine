@@ -1,29 +1,28 @@
 #pragma once
 #include <vector>
+#include <tuple>
 #include "vector.h"
 #include "circle.h"
-
-struct Extremities
-{
-	float highest;
-	float lowest;
-};
 
 class Polygon
 {
 private:
+	Vector _position;
 	std::vector<Vector> _vertices;
 
-	int VertexCount() const;
-	Vector Vertex(int i) const;
 	Vector Edge(int i) const;
 
 	Vector Normal(Vector edge) const;
-	Extremities Projections(Vector axis) const;
-	Extremities Projections(Circle circle, Vector axis) const;
+	std::tuple<float, float> Projections(Vector axis) const;
+	std::tuple<float, float> Projections(Circle circle, Vector axis) const;
+
+	float Distance(float minA, float maxA, float minB, float maxB) const;
 
 public:
-	Polygon(std::vector<Vector> vertices);
+	int VertexCount() const;
+	Vector Vertex(int i) const;
+
+	Polygon(Vector position, std::vector<Vector> vertices);
 	~Polygon();
 
 	bool Collides(Polygon other) const;

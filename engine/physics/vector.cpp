@@ -1,9 +1,14 @@
 #include "vector.h"
 #include <math.h>
 
-Vector Vector::operator-(Vector rhs)
+Vector operator+(const Vector& lhs, const Vector& rhs)
 {
-	return { x - rhs.x, y - rhs.y };
+	return { lhs.x + rhs.x, lhs.y + rhs.y };
+}
+
+Vector operator-(const Vector& lhs, const Vector& rhs)
+{
+	return { lhs.x - rhs.x, lhs.y - rhs.y };
 }
 
 float Vector::Cross(Vector other) const
@@ -27,10 +32,10 @@ Vector Vector::Scale(float multiplier) const
 
 Vector Vector::Normalize() const
 {
-	return Scale(1.0f / Distance());
+	return Scale(1.0f / Magnitude());
 }
 
-float Vector::Distance() const
+float Vector::Magnitude() const
 {
-	return (float)sqrt(pow(x, 2) + pow(y, 2));
+	return sqrtf(x * x + y * y);
 }

@@ -2,9 +2,12 @@
 #include <algorithm>
 #include <limits>
 #include <math.h>
+#define HIGHEST 0
+#define LOWEST 1
 
-Polygon::Polygon(std::vector<Vector> vertices)
+Polygon::Polygon(Vector position, std::vector<Vector> vertices)
 {
+	_position = position;
 	_vertices = vertices;
 }
 
@@ -20,7 +23,7 @@ int Polygon::VertexCount() const
 
 Vector Polygon::Vertex(int i) const
 {
-	return _vertices.at(i);
+	return _position + _vertices.at(i);
 }
 
 Vector Polygon::Edge(int i) const
@@ -30,8 +33,8 @@ Vector Polygon::Edge(int i) const
 
 Vector Polygon::Normal(Vector edge) const
 {
-	Vector normal = { -edge.x, edge.y };
-	normal.Normalize();
+	Vector normal = { -edge.y, edge.x };
+	normal = normal.Normalize();
 
 	if (edge.Cross(normal) > 0)
 		return normal.Scale(-1.0);
@@ -39,30 +42,37 @@ Vector Polygon::Normal(Vector edge) const
 	return normal;
 }
 
-Extremities Polygon::Projections(Vector axis) const
+std::tuple<float, float> Polygon::Projections(Vector axis) const
 {
-	float highest = std::numeric_limits<float>::min();
+	float highest = -std::numeric_limits<float>::max();
 	float lowest = std::numeric_limits<float>::max();
 
 	for (int i = 0; i < VertexCount(); i++)
 	{
-		float length = Vertex(i).Dot(axis);
-
+		float length = axis.Dot(Vertex(i));
 		highest = std::max(length, highest);
 		lowest = std::min(length, lowest);
 	}
 
-	return { highest, lowest };
+	return std::tuple<float, float>{highest, lowest};
 }
 
-Extremities Polygon::Projections(Circle circle, Vector axis) const
+float Polygon::Distance(float minA, float maxA, float minB, float maxB) const
 {
-	float highest = std::numeric_limits<float>::min();
+	if (minA < minB)
+		return minB - maxA;
+
+	return minA - maxB;
+}
+
+std::tuple<float, float> Polygon::Projections(Circle circle, Vector axis) const
+{
+	float highest = -std::numeric_limits<float>::max();
 	float lowest = std::numeric_limits<float>::max();
 
-	for (int j = 0; j < VertexCount(); j++)
+	for (int i = 0; i < VertexCount(); i++)
 	{
-		Vector edge2 = Edge(j);
+		Vector edge2 = Edge(i);
 
 		float angle = atan2(edge2.y, edge2.x);
 
@@ -77,22 +87,25 @@ Extremities Polygon::Projections(Circle circle, Vector axis) const
 		lowest = std::min(length, lowest);
 	}
 
-	return { highest, lowest };
+	return std::tuple<float, float>{highest, lowest};
 }
 
 bool Polygon::Collides(Polygon other) const
 {
 	for (int i = 0; i < VertexCount(); i++)
 	{
-		Vector normal = Normal(Edge(i));
+		auto edge = Edge(i);
+		auto normal = Normal(edge);
+		auto selfProj = Projections(normal);
+		auto otherProj = other.Projections(normal);
 
-		Extremities selfProj = Projections(normal);
-		Extremities otherProj = other.Projections(normal);
+		auto distance = Distance(
+			(float)std::get<LOWEST>(selfProj), 
+			(float)std::get<HIGHEST>(selfProj),
+			(float)std::get<LOWEST>(otherProj),
+			(float)std::get<HIGHEST>(otherProj));
 
-		if (otherProj.highest - selfProj.lowest > 0 && otherProj.lowest - selfProj.highest > 0)
-			return false;
-
-		if (otherProj.highest - selfProj.lowest < 0 && otherProj.lowest - selfProj.highest < 0)
+		if(distance > 0)
 			return false;
 	}
 
@@ -103,15 +116,17 @@ bool Polygon::Collides(Circle circle) const
 {
 	for (int i = 0; i < VertexCount(); i++)
 	{
-		Vector normal = Normal(Edge(i));
+		auto normal = Normal(Edge(i));
+		auto selfProj = Projections(normal);
+		auto otherProj = Projections(circle, normal);
 
-		Extremities selfProj = Projections(normal);
-		Extremities otherProj = Projections(circle, normal);
+		auto distance = Distance(
+			(float)std::get<LOWEST>(selfProj),
+			(float)std::get<HIGHEST>(selfProj),
+			(float)std::get<LOWEST>(otherProj),
+			(float)std::get<HIGHEST>(otherProj));
 
-		if (otherProj.highest - selfProj.lowest > 0 && otherProj.lowest - selfProj.highest > 0)
-			return false;
-
-		if (otherProj.highest - selfProj.lowest < 0 && otherProj.lowest - selfProj.highest < 0)
+		if (distance > 0)
 			return false;
 	}
 
