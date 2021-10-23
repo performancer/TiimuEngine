@@ -1,3 +1,9 @@
+<b>TiimuEngine</b>
+
+TiimuEngine is a very simple 2D engine built on OpenGL. It's a goofy little hobby project to learn more about OpenGL, please do not use this.
+
+This project has been abandoned and will not be developed any longer.
+
 <b>HOW TO USE</b>
 
 Add following files to your project:
